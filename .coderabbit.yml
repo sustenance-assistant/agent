@@ -1,0 +1,38 @@
+# CodeRabbit configuration for OSS repositories
+# CodeRabbit is free for open source repositories
+# It automatically reviews PRs when configured
+
+language: auto-detect
+reviewers:
+  - paths:
+      - "Back-End/**"
+    min_reviewers: 1
+    labels:
+      - backend
+      - dotnet
+  - paths:
+      - "Front-End/**"
+    min_reviewers: 1
+    labels:
+      - frontend
+
+# Data-driven PR insights
+pr_review:
+  # Request review on PR open
+  request_review_on_creation: true
+  # Provide code quality metrics
+  code_quality_checks: true
+  # Security vulnerability scanning
+  security_scan: true
+  # Suggest improvements based on best practices
+  suggest_improvements: true
+
+# Comment style - make PRs more data-driven
+comments:
+  # Add metrics and statistics to PR comments
+  include_metrics: true
+  # Provide code complexity analysis
+  complexity_analysis: true
+  # Include test coverage insights
+  test_coverage: true
+

@@ -1,0 +1,35 @@
+name: Front-End CI
+
+on:
+  push:
+    branches: [main, develop, master]
+    paths:
+      - "Front-End/**"
+  pull_request:
+    branches: [main, develop, master]
+    paths:
+      - "Front-End/**"
+
+jobs:
+  hello-world:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Front-End
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Hello World
+        run: echo "Hello World from Front-End CI"
+
+  # Placeholder for future Front-End tests
+  # gate:
+  #   runs-on: ubuntu-latest
+  #   needs: hello-world
+  #   if: github.event_name == 'pull_request'
+  #   steps:
+  #     - name: Gate - All checks must pass
+  #       run: echo "✅ All checks passed - PR is ready to merge"
+
