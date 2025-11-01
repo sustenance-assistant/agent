@@ -1,0 +1,403 @@
+{
+  "info": {
+    "name": "FoodOrderingService",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"name\": \"John Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","auth","register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","auth","login"]
+            }
+          }
+        },
+        {
+          "name": "Create API Key",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "x-user-id", "value": "{{userId}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/api-key",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","auth","api-key"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Add Payment Card",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\": \"4242424242424242\",\n  \"expMonth\": 12,\n  \"expYear\": 2025,\n  \"cvc\": \"123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/cards",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","payment","cards"]
+            }
+          }
+        },
+        {
+          "name": "Get Payment Card",
+          "request": {
+            "method": "GET",
+            "header": [
+              {"key": "x-user-id", "value": "{{userId}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/cards/{{cardId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","payment","cards","{{cardId}}"]
+            }
+          }
+        },
+        {
+          "name": "Bill User (Full Card Details - Stripe Headless)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-api-key", "value": "{{apiKey}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\": \"4242424242424242\",\n  \"expMonth\": 12,\n  \"expYear\": 2025,\n  \"cvc\": \"123\",\n  \"totalAmount\": 29.99,\n  \"currency\": \"USD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/bill",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","payment","bill"]
+            },
+            "description": "Bill user with full card details. Card details are processed securely on backend (Stripe headless style)."
+          }
+        },
+        {
+          "name": "Bill User (Saved Card)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-api-key", "value": "{{apiKey}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardId\": \"{{cardId}}\",\n  \"totalAmount\": 29.99,\n  \"currency\": \"USD\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payment/bill",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","payment","bill"]
+            },
+            "description": "Bill user using saved card by ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "STT",
+      "item": [
+        {
+          "name": "Transcribe (Dummy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/stt/transcribe/dummy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","stt","transcribe","dummy"]
+            },
+            "description": "Test STT with dummy data"
+          }
+        },
+        {
+          "name": "Transcribe (Audio File)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "audio",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stt/transcribe",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","stt","transcribe"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "TTS",
+      "item": [
+        {
+          "name": "Synthesize (Dummy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Hello, this is a test message.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tts/synthesize/dummy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","tts","synthesize","dummy"]
+            },
+            "description": "Test TTS with dummy data"
+          }
+        },
+        {
+          "name": "Synthesize",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Your order is ready for pickup.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tts/synthesize",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","tts","synthesize"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RAG",
+      "item": [
+        {
+          "name": "Search (Dummy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"What types of pizza do you offer?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rag/search/dummy",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","rag","search","dummy"]
+            },
+            "description": "Test RAG with dummy data"
+          }
+        },
+        {
+          "name": "Search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"What are your delivery options?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rag/search",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","rag","search"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maintenance",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","health"]
+            }
+          }
+        },
+        {
+          "name": "Get Context",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/context/{{sessionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","context","{{sessionId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "StreamGateway",
+      "item": [
+        {
+          "name": "Text -> Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"I'd like a large pepperoni pizza and a cola.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stream/text",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","stream","text"]
+            }
+          }
+        },
+        {
+          "name": "Audio -> Response (multipart)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "x-user-id", "value": "{{userId}}"}
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "File",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stream/audio",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","stream","audio"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "MCPGateway",
+      "item": [
+        {
+          "name": "List Tools",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/mcp/tools/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","mcp","tools","list"]
+            }
+          }
+        },
+        {
+          "name": "Call Tool (order with workflow)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "x-api-key", "value": "{{apiKey}}"},
+              {"key": "x-user-id", "value": "{{userId}}"},
+              {"key": "x-session-id", "value": "{{sessionId}}"}
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tool\": \"order\",\n  \"workflow\": \"order\",\n  \"arguments\": {\n    \"items\": [{ \"sku\": \"pizza.pepperoni.lg\", \"qty\": 1 }],\n    \"paymentId\": \"pay_123\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/mcp/tools/call",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","mcp","tools","call"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:5050"},
+    {"key": "sessionId", "value": "demo-session-1"},
+    {"key": "userId", "value": "user-123"},
+    {"key": "apiKey", "value": ""},
+    {"key": "cardId", "value": ""}
+  ]
+}

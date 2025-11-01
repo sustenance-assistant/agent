@@ -1,0 +1,39 @@
+name: Back-End CI
+
+on:
+    push:
+        branches: [main, develop]
+        paths:
+            - "Back-End/**"
+    pull_request:
+        branches: [main, develop]
+        paths:
+            - "Back-End/**"
+
+jobs:
+    hello-world:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: Back-End
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Hello World
+              run: echo "Hello World from Back-End CI"
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: "8.0.x"
+
+            - name: Restore dependencies
+              run: dotnet restore
+
+            - name: Build
+              run: dotnet build --no-restore
+
+            - name: Run tests
+              run: dotnet test --no-build --verbosity normal

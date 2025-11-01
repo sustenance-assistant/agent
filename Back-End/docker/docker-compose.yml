@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: food-ordering-service-api:latest
+    container_name: food-ordering-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    restart: unless-stopped
+
+
