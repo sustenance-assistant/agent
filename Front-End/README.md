@@ -1,38 +1,25 @@
-# sv
+# Frontend
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Ask @toiletbril.
 
-## Creating a project
+# Quickstart
 
-If you're seeing this, you've probably already done this step. Congrats!
-
+Developer environment:
 ```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
+$ bun run dev
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Bundle:
+```
+$ bun run build
+$ bun run preview
 ```
 
-## Building
+User talks to the button on the frontent -> Server replies with food order -> User can cancel the order or view progress.
 
-To create a production version of your app:
+## Unordered TODOs
 
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- Docker compose
+- Tests
+- The login screen
+  - Phone number (to receive a text message) connected to an e-mail (maybe mock with fake credentials)
