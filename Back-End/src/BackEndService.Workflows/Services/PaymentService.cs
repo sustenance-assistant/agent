@@ -105,7 +105,7 @@ namespace BackEndService.Workflows.Services
                 {
                     Amount = (long)(amount * 100), // Stripe uses cents
                     Currency = currency.ToLower(),
-                    PaymentMethodTypes = new List<string> { "card" },
+                    PaymentMethodTypes = ["card"],
                     Metadata = new Dictionary<string, string>
                     {
                         { "user_id", userId }

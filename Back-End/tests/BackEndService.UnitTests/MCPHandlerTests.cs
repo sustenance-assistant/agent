@@ -17,7 +17,7 @@ namespace BackEndService.UnitTests
             var tools = result.RootElement.GetProperty("tools");
             
             Assert.True(tools.GetArrayLength() > 0);
-            Assert.Contains("order", tools.EnumerateArray().Select(e => e.GetString()).Where(s => s != null)!);
+            Assert.Contains("order", tools.EnumerateArray().Select(e => e.GetString()).OfType<string>());
         }
 
         [Fact]

@@ -43,11 +43,7 @@ namespace BackEndService.Workflows.Modules.MCP
 
             // Validate and inject API key if present
             string? apiKey = null;
-            if (!string.IsNullOrEmpty(context.SessionId))
-            {
-                var storedContext = await _contextStore.GetAsync(context.SessionId);
-                // API key should be passed via headers, but we can store it in context
-            }
+            // API key should be passed via headers, but we can store it in context
 
             if (input is McpToolCall call && !string.IsNullOrWhiteSpace(call.Workflow))
             {
@@ -56,8 +52,8 @@ namespace BackEndService.Workflows.Modules.MCP
                 if (apiKey != null && enrichedArgs.HasValue)
                 {
                     var argsJson = enrichedArgs.Value.Clone();
-                    var argsObj = JsonSerializer.Deserialize<Dictionary<string, object>>(argsJson.GetRawText()) ?? new Dictionary<string, object>();
-                    argsObj["apiKey"] = apiKey;
+                    var argsObj = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(argsJson.GetRawText()) ?? new Dictionary<string, JsonElement>();
+                    argsObj["apiKey"] = JsonDocument.Parse($"\"{apiKey}\"").RootElement;
                     enrichedArgs = JsonDocument.Parse(JsonSerializer.Serialize(argsObj)).RootElement;
                 }
 

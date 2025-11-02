@@ -2,17 +2,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY ./FoodOrderingService.sln ./
-COPY ./src/FoodOrderingService.Core/FoodOrderingService.Core.csproj ./src/FoodOrderingService.Core/
-COPY ./src/FoodOrderingService.Gateway/FoodOrderingService.Gateway.csproj ./src/FoodOrderingService.Gateway/
-COPY ./src/FoodOrderingService.Workflows/FoodOrderingService.Workflows.csproj ./src/FoodOrderingService.Workflows/
-COPY ./src/FoodOrderingService.Infrastructure/FoodOrderingService.Infrastructure.csproj ./src/FoodOrderingService.Infrastructure/
-COPY ./src/FoodOrderingService.API/FoodOrderingService.API.csproj ./src/FoodOrderingService.API/
+COPY ./BackEndService.sln ./
+COPY ./src/BackEndService.Core/FoodOrderingService.Core.csproj ./src/BackEndService.Core/
+COPY ./src/BackEndService.Gateway/FoodOrderingService.Gateway.csproj ./src/BackEndService.Gateway/
+COPY ./src/BackEndService.Workflows/FoodOrderingService.Workflows.csproj ./src/BackEndService.Workflows/
+COPY ./src/BackEndService.Infrastructure/FoodOrderingService.Infrastructure.csproj ./src/BackEndService.Infrastructure/
+COPY ./src/BackEndService.API/FoodOrderingService.API.csproj ./src/BackEndService.API/
 
-RUN dotnet restore ./FoodOrderingService.sln
+RUN dotnet restore ./BackEndService.sln
 
 COPY ./src ./src
-RUN dotnet publish ./src/FoodOrderingService.API/FoodOrderingService.API.csproj -c Release -o /app/publish
+RUN dotnet publish ./src/BackEndService.API/FoodOrderingService.API.csproj -c Release -o /app/publish
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
