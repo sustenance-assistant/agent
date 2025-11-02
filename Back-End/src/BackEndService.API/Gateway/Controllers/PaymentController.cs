@@ -7,6 +7,7 @@ using BackEndService.Core.Models.Context;
 using BackEndService.Core.Models.Payment;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -18,11 +19,13 @@ namespace BackEndService.API.Gateway.Controllers
     {
         private readonly IPaymentService _paymentService;
         private readonly IWorkflowOrchestrator _orchestrator;
+        private readonly IConfiguration _configuration;
 
-        public PaymentController(IPaymentService paymentService, IWorkflowOrchestrator orchestrator)
+        public PaymentController(IPaymentService paymentService, IWorkflowOrchestrator orchestrator, IConfiguration configuration)
         {
             _paymentService = paymentService;
             _orchestrator = orchestrator;
+            _configuration = configuration;
         }
 
         [HttpPost("cards")]
@@ -77,6 +80,12 @@ namespace BackEndService.API.Gateway.Controllers
             if (!hasCardId && !hasFullCard)
             {
                 return BadRequest(new { error = "Either cardId or full card details (cardNumber, expMonth, expYear, cvc) must be provided" });
+            }
+            
+            // Block raw card details in production for PCI DSS compliance
+            if (hasFullCard && _configuration.GetValue<bool>("Payment:DisableRawCardDetails", false))
+            {
+                return BadRequest(new { error = "Raw card details are disabled for security. Please use Stripe.js/Elements on the frontend to tokenize cards, or use a saved cardId." });
             }
 
             var context = new WorkflowContext 

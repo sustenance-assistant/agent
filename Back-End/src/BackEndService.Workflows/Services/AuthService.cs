@@ -21,6 +21,21 @@ namespace BackEndService.Workflows.Services
         /// </summary>
         public Task<User> RegisterAsync(string email, string password, string? name)
         {
+            // Validate email is not empty (basic validation for placeholder)
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email is required", nameof(email));
+            }
+            
+            // Check for duplicate email
+            if (Users.Values.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new InvalidOperationException($"User with email '{email}' already exists");
+            }
+            
+            // Note: Password parameter is intentionally ignored - this is a demo placeholder
+            // In production, hash password with BCrypt/Argon2 and store securely
+            
             var user = new User
             {
                 Id = Guid.NewGuid().ToString(),
@@ -38,7 +53,15 @@ namespace BackEndService.Workflows.Services
         /// </summary>
         public Task<User?> LoginAsync(string email, string password)
         {
-            var user = Users.Values.FirstOrDefault(u => u.Email == email);
+            // Basic validation for placeholder
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                return Task.FromResult<User?>(null);
+            }
+            
+            var user = Users.Values.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+            // Note: Password verification intentionally skipped - this is a demo placeholder
+            // In production, verify password hash against stored credentials
             return Task.FromResult(user);
         }
 
