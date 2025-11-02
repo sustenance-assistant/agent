@@ -30,8 +30,8 @@ builder.Services.AddSwaggerGen(c =>
         Format = "binary"
     });
 });
-builder.Services.AddSwaggerExamplesFromAssemblyOf<FoodOrderingService.API.Swagger.TextStreamRequestExample>();
-builder.Services.AddSwaggerExamplesFromAssemblyOf<FoodOrderingService.API.Swagger.BillingRequestExample>();
+builder.Services.AddSwaggerExamplesFromAssemblyOf<BackEndService.API.Swagger.TextStreamRequestExample>();
+builder.Services.AddSwaggerExamplesFromAssemblyOf<BackEndService.API.Swagger.BillingRequestExample>();
 
 // Model validation response
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
@@ -55,96 +55,96 @@ builder.Services.AddRateLimiter(options =>
 });
 
 // Gateway services
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Gateway.IStreamProcessor, FoodOrderingService.Gateway.Services.StreamProcessor>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Gateway.IContextProvider, FoodOrderingService.Gateway.Services.ContextProvider>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Gateway.IMCPHandler, FoodOrderingService.Gateway.Services.MCPHandler>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Gateway.IStreamProcessor, BackEndService.Gateway.Services.StreamProcessor>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Gateway.IContextProvider, BackEndService.Gateway.Services.ContextProvider>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Gateway.IMCPHandler, BackEndService.Gateway.Services.MCPHandler>();
 
 // Context store - using JSON store for persistence
-builder.Services.AddSingleton<FoodOrderingService.Core.Interfaces.Services.IContextStore, FoodOrderingService.Infrastructure.Storage.JsonContextStore>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.ILogRepository, FoodOrderingService.Infrastructure.Logging.SerilogLogRepository>();
+builder.Services.AddSingleton<BackEndService.Core.Interfaces.Services.IContextStore, BackEndService.Infrastructure.Storage.JsonContextStore>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.ILogRepository, BackEndService.Infrastructure.Logging.SerilogLogRepository>();
 
 // Auth and Payment services
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.IAuthService, FoodOrderingService.Workflows.Services.AuthService>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.IPaymentService, FoodOrderingService.Workflows.Services.PaymentService>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.IIntentClassifier, FoodOrderingService.Workflows.Services.IntentClassifierService>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.IAuthService, BackEndService.Workflows.Services.AuthService>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.IPaymentService, BackEndService.Workflows.Services.PaymentService>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.IIntentClassifier, BackEndService.Workflows.Services.IntentClassifierService>();
 
 // Workflow orchestration
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Workflows.IWorkflowOrchestrator, FoodOrderingService.Workflows.Orchestration.WorkflowOrchestrator>();
-builder.Services.AddSingleton<FoodOrderingService.Core.Interfaces.Workflows.IWorkflowRepository>(sp =>
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Workflows.IWorkflowOrchestrator, BackEndService.Workflows.Orchestration.WorkflowOrchestrator>();
+builder.Services.AddSingleton<BackEndService.Core.Interfaces.Workflows.IWorkflowRepository>(sp =>
 {
-    var registry = new FoodOrderingService.Workflows.Orchestration.WorkflowRegistry();
+    var registry = new BackEndService.Workflows.Orchestration.WorkflowRegistry();
     registry.Register("mcp-list-tools", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.MCP.MCPListToolsModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.MCP.MCPListToolsModule))
     });
     registry.Register("mcp-execute-tool", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.MCP.MCPExecuteToolModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.MCP.MCPExecuteToolModule))
     });
     registry.Register("order", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.OrderProcessing.OrderWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.OrderProcessing.OrderWorkflowModule))
     });
     registry.Register("stt", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.STT.STTWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.STT.STTWorkflowModule))
     });
     registry.Register("tts", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.TTS.TTSWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.TTS.TTSWorkflowModule))
     });
     registry.Register("rag", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.RAG.RAGWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.RAG.RAGWorkflowModule))
     });
     registry.Register("intent-classification", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.IntentClassification.IntentClassificationWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.IntentClassification.IntentClassificationWorkflowModule))
     });
     registry.Register("create-api-key", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.Auth.CreateApiKeyWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.Auth.CreateApiKeyWorkflowModule))
     });
     registry.Register("billing", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.Payment.BillingWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.Payment.BillingWorkflowModule))
     });
     registry.Register("text-to-response", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.Text.TextToResponseWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.Text.TextToResponseWorkflowModule))
     });
     registry.Register("audio-to-response", new[]
     {
-        new FoodOrderingService.Core.Models.Workflows.WorkflowStep(typeof(FoodOrderingService.Workflows.Modules.Audio.AudioToResponseWorkflowModule))
+        new BackEndService.Core.Models.Workflows.WorkflowStep(typeof(BackEndService.Workflows.Modules.Audio.AudioToResponseWorkflowModule))
     });
     return registry;
 });
 
 // Register workflow modules
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.MCP.MCPListToolsModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.MCP.MCPExecuteToolModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.Text.TextToResponseWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.Audio.AudioToResponseWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.OrderProcessing.OrderWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.STT.STTWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.TTS.TTSWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.RAG.RAGWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.IntentClassification.IntentClassificationWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.Auth.CreateApiKeyWorkflowModule>();
-builder.Services.AddScoped<FoodOrderingService.Workflows.Modules.Payment.BillingWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.MCP.MCPListToolsModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.MCP.MCPExecuteToolModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.Text.TextToResponseWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.Audio.AudioToResponseWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.OrderProcessing.OrderWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.STT.STTWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.TTS.TTSWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.RAG.RAGWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.IntentClassification.IntentClassificationWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.Auth.CreateApiKeyWorkflowModule>();
+builder.Services.AddScoped<BackEndService.Workflows.Modules.Payment.BillingWorkflowModule>();
 
 // HTTP clients for external APIs
 builder.Services.AddHttpClient();
 
 // Workflow services
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.ISTTService, FoodOrderingService.Workflows.Services.STTService>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.ITTSService, FoodOrderingService.Workflows.Services.TTSService>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.IRAGService, FoodOrderingService.Workflows.Services.RAGService>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.ISTTService, BackEndService.Workflows.Services.STTService>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.ITTSService, BackEndService.Workflows.Services.TTSService>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.IRAGService, BackEndService.Workflows.Services.RAGService>();
 
 // JSON repositories
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.ISTTRepository, FoodOrderingService.Infrastructure.Storage.JsonSTTRepository>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.ITTSRepository, FoodOrderingService.Infrastructure.Storage.JsonTTSRepository>();
-builder.Services.AddScoped<FoodOrderingService.Core.Interfaces.Services.IRAGRepository, FoodOrderingService.Infrastructure.Storage.JsonRAGRepository>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.ISTTRepository, BackEndService.Infrastructure.Storage.JsonSTTRepository>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.ITTSRepository, BackEndService.Infrastructure.Storage.JsonTTSRepository>();
+builder.Services.AddScoped<BackEndService.Core.Interfaces.Services.IRAGRepository, BackEndService.Infrastructure.Storage.JsonRAGRepository>();
 
 var app = builder.Build();
 
@@ -157,7 +157,7 @@ if (app.Environment.IsDevelopment())
 app.UseRateLimiter();
 
 // API Key middleware
-app.UseMiddleware<FoodOrderingService.API.Gateway.Middleware.ApiKeyMiddleware>();
+app.UseMiddleware<BackEndService.API.Gateway.Middleware.ApiKeyMiddleware>();
 
 app.UseAuthorization();
 
@@ -167,7 +167,7 @@ app.MapControllers();
 var requiredWorkflows = new[] { "mcp-list-tools", "mcp-execute-tool", "text-to-response", "audio-to-response", "intent-classification", "create-api-key", "billing", "rag", "order" };
 using (var scope = app.Services.CreateScope())
 {
-    var repo = scope.ServiceProvider.GetRequiredService<FoodOrderingService.Core.Interfaces.Workflows.IWorkflowRepository>();
+    var repo = scope.ServiceProvider.GetRequiredService<BackEndService.Core.Interfaces.Workflows.IWorkflowRepository>();
     foreach (var wf in requiredWorkflows)
     {
         _ = repo.GetWorkflow(wf);

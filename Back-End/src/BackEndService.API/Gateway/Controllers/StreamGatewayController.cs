@@ -48,7 +48,7 @@ namespace BackEndService.API.Gateway.Controllers
         [Produces("application/json")]
         [SwaggerOperation(Summary = "Submit text stream", Description = "Accepts text input and routes through the text-to-response workflow.")]
         [SwaggerResponse(200, "Text response")]
-        [SwaggerRequestExample(typeof(TextStreamRequestDto), typeof(FoodOrderingService.API.Swagger.TextStreamRequestExample))]
+        [SwaggerRequestExample(typeof(TextStreamRequestDto), typeof(BackEndService.API.Swagger.TextStreamRequestExample))]
         public async Task<IActionResult> ProcessTextStream([FromBody] TextStreamRequestDto request)
         {
             var headers = HttpContext.Request.Headers.ToDictionary(h => h.Key.ToLowerInvariant(), h => h.Value.ToString());

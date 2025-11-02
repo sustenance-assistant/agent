@@ -14,10 +14,10 @@ namespace BackEndService.UnitTests
         [Fact]
         public async Task ExecuteAsync_WithAudioStream_ReturnsTranscription()
         {
-            var mockStt = new Mock<FoodOrderingService.Core.Interfaces.Services.ISTTService>();
+            var mockStt = new Mock<BackEndService.Core.Interfaces.Services.ISTTService>();
             mockStt.Setup(x => x.TranscribeAsync(It.IsAny<Stream>())).ReturnsAsync("hello world");
             
-            var module = new FoodOrderingService.Workflows.Modules.STT.STTWorkflowModule(mockStt.Object);
+            var module = new BackEndService.Workflows.Modules.STT.STTWorkflowModule(mockStt.Object);
             var context = new WorkflowContext { UserId = "test" };
             var stream = new MemoryStream(Encoding.UTF8.GetBytes("audio"));
             
@@ -33,11 +33,11 @@ namespace BackEndService.UnitTests
         [Fact]
         public async Task ExecuteAsync_WithText_ReturnsAudioLength()
         {
-            var mockTts = new Mock<FoodOrderingService.Core.Interfaces.Services.ITTSService>();
+            var mockTts = new Mock<BackEndService.Core.Interfaces.Services.ITTSService>();
             var audioStream = new MemoryStream(Encoding.UTF8.GetBytes("audio data"));
             mockTts.Setup(x => x.SynthesizeAsync("test")).ReturnsAsync(audioStream);
             
-            var module = new FoodOrderingService.Workflows.Modules.TTS.TTSWorkflowModule(mockTts.Object);
+            var module = new BackEndService.Workflows.Modules.TTS.TTSWorkflowModule(mockTts.Object);
             var context = new WorkflowContext { UserId = "test" };
             
             var result = await module.ExecuteAsync(context, "test");
@@ -52,10 +52,10 @@ namespace BackEndService.UnitTests
         [Fact]
         public async Task ExecuteAsync_WithQuery_ReturnsResults()
         {
-            var mockRag = new Mock<FoodOrderingService.Core.Interfaces.Services.IRAGService>();
+            var mockRag = new Mock<BackEndService.Core.Interfaces.Services.IRAGService>();
             mockRag.Setup(x => x.SearchAsync("pizza", "test")).ReturnsAsync(new[] { "result1", "result2" });
             
-            var module = new FoodOrderingService.Workflows.Modules.RAG.RAGWorkflowModule(mockRag.Object);
+            var module = new BackEndService.Workflows.Modules.RAG.RAGWorkflowModule(mockRag.Object);
             var context = new WorkflowContext { UserId = "test" };
             
             var result = await module.ExecuteAsync(context, "pizza");

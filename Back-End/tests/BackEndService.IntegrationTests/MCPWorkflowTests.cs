@@ -13,13 +13,13 @@ namespace BackEndService.IntegrationTests
         [Fact]
         public async Task MCPExecuteToolModule_WithWorkflow_RoutesToOrchestrator()
         {
-            var mockHandler = new Mock<FoodOrderingService.Core.Interfaces.Gateway.IMCPHandler>();
-            var mockOrchestrator = new Mock<FoodOrderingService.Core.Interfaces.Workflows.IWorkflowOrchestrator>();
-            var mockContextStore = new Mock<FoodOrderingService.Core.Interfaces.Services.IContextStore>();
-            var mockAuthService = new Mock<FoodOrderingService.Core.Interfaces.Services.IAuthService>();
+            var mockHandler = new Mock<BackEndService.Core.Interfaces.Gateway.IMCPHandler>();
+            var mockOrchestrator = new Mock<BackEndService.Core.Interfaces.Workflows.IWorkflowOrchestrator>();
+            var mockContextStore = new Mock<BackEndService.Core.Interfaces.Services.IContextStore>();
+            var mockAuthService = new Mock<BackEndService.Core.Interfaces.Services.IAuthService>();
             
             mockOrchestrator.Setup(x => x.ExecuteAsync("order", It.IsAny<WorkflowContext>(), It.IsAny<object>()))
-                           .ReturnsAsync(new FoodOrderingService.Core.Models.Workflows.WorkflowResponse { Data = new { status = "ok" } });
+                           .ReturnsAsync(new BackEndService.Core.Models.Workflows.WorkflowResponse { Data = new { status = "ok" } });
             
             mockContextStore.Setup(x => x.GetAsync(It.IsAny<string>())).ReturnsAsync((WorkflowContext?)null);
             
@@ -41,7 +41,7 @@ namespace BackEndService.IntegrationTests
         [Fact]
         public async Task MCPListToolsModule_ReturnsTools()
         {
-            var mockHandler = new Mock<FoodOrderingService.Core.Interfaces.Gateway.IMCPHandler>();
+            var mockHandler = new Mock<BackEndService.Core.Interfaces.Gateway.IMCPHandler>();
             mockHandler.Setup(x => x.ListToolsAsync(It.IsAny<JsonDocument>()))
                       .ReturnsAsync(JsonDocument.Parse("{\"tools\":[\"order\",\"stt\"]}"));
             

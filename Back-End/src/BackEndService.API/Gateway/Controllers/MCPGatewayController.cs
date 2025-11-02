@@ -40,7 +40,7 @@ namespace BackEndService.API.Gateway.Controllers
         [Consumes("application/json")]
         [SwaggerOperation(Summary = "Call an MCP tool", Description = "Invokes a tool by name with arguments. API key is injected from x-api-key header.")]
         [SwaggerResponse(200, "Tool invocation result")]
-        [SwaggerRequestExample(typeof(McpToolCallRequestDto), typeof(FoodOrderingService.API.Swagger.McpToolCallRequestExample))]
+        [SwaggerRequestExample(typeof(McpToolCallRequestDto), typeof(BackEndService.API.Swagger.McpToolCallRequestExample))]
         public async Task<IActionResult> CallTool(
             [FromBody] McpToolCallRequestDto request,
             [FromHeader(Name = "x-api-key")] string? apiKey,
@@ -51,7 +51,7 @@ namespace BackEndService.API.Gateway.Controllers
             context.UserId = userId ?? context.UserId;
             context.SessionId = sessionId ?? context.SessionId;
             
-            var model = new FoodOrderingService.Core.Models.MCP.McpToolCall
+            var model = new BackEndService.Core.Models.MCP.McpToolCall
             {
                 Tool = request.Tool,
                 Workflow = request.Workflow,
