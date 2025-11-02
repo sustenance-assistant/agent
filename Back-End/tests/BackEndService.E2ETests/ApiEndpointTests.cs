@@ -19,7 +19,7 @@ namespace BackEndService.E2ETests
             _client = new HttpClient { BaseAddress = new System.Uri("http://localhost:5050") };
         }
 
-        [Fact]
+        [Fact(Skip = "Requires running server - skip in CI")]
         public async Task HealthEndpoint_ReturnsOk()
         {
             var response = await _client.GetAsync("/api/health");
@@ -28,7 +28,7 @@ namespace BackEndService.E2ETests
             Assert.Contains("ok", content);
         }
 
-        [Fact]
+        [Fact(Skip = "Requires running server - skip in CI")]
         public async Task TextStreamEndpoint_AcceptsJson_ReturnsResponse()
         {
             var payload = new { text = "I'd like a pizza" };
@@ -45,7 +45,7 @@ namespace BackEndService.E2ETests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Requires running server - skip in CI")]
         public async Task MCPListTools_ReturnsTools()
         {
             var response = await _client.PostAsync("/api/mcp/tools/list", new StringContent("", Encoding.UTF8, "application/json"));
