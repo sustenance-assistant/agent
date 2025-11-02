@@ -83,7 +83,7 @@ namespace BackEndService.API.Gateway.Controllers
             }
             
             // Block raw card details in production for PCI DSS compliance
-            if (hasFullCard && _configuration.GetValue<bool>("Payment:DisableRawCardDetails", false))
+            if (hasFullCard && _configuration.GetValue<bool>("Services:Payment:DisableRawCardDetails", false))
             {
                 return BadRequest(new { error = "Raw card details are disabled for security. Please use Stripe.js/Elements on the frontend to tokenize cards, or use a saved cardId." });
             }
@@ -113,9 +113,8 @@ namespace BackEndService.API.Gateway.Controllers
             // Use System.Text.Json to safely check result
             if (result.Data != null)
             {
-                var jsonString = System.Text.Json.JsonSerializer.Serialize(result.Data);
-                var jsonDoc = System.Text.Json.JsonDocument.Parse(jsonString);
-                if (jsonDoc.RootElement.TryGetProperty("success", out var successProp) && 
+                var jsonElement = System.Text.Json.JsonSerializer.SerializeToElement(result.Data);
+                if (jsonElement.TryGetProperty("success", out var successProp) && 
                     !successProp.GetBoolean())
                 {
                     return BadRequest(result.Data);
