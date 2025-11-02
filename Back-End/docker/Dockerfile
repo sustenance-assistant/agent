@@ -8,6 +8,9 @@ COPY ./src/BackEndService.Gateway/FoodOrderingService.Gateway.csproj ./src/BackE
 COPY ./src/BackEndService.Workflows/FoodOrderingService.Workflows.csproj ./src/BackEndService.Workflows/
 COPY ./src/BackEndService.Infrastructure/FoodOrderingService.Infrastructure.csproj ./src/BackEndService.Infrastructure/
 COPY ./src/BackEndService.API/FoodOrderingService.API.csproj ./src/BackEndService.API/
+COPY ./tests/BackEndService.UnitTests/FoodOrderingService.UnitTests.csproj ./tests/BackEndService.UnitTests/
+COPY ./tests/BackEndService.IntegrationTests/FoodOrderingService.IntegrationTests.csproj ./tests/BackEndService.IntegrationTests/
+COPY ./tests/BackEndService.E2ETests/FoodOrderingService.E2ETests.csproj ./tests/BackEndService.E2ETests/
 
 RUN dotnet restore ./BackEndService.sln
 
