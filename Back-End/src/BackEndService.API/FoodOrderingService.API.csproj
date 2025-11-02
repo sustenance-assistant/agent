@@ -19,9 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BackEndService.Core\BackEndService.Core.csproj" />
-    <ProjectReference Include="..\BackEndService.Gateway\BackEndService.Gateway.csproj" />
-    <ProjectReference Include="..\BackEndService.Workflows\BackEndService.Workflows.csproj" />
+    <ProjectReference Include="..\BackEndService.Core\FoodOrderingService.Core.csproj" />
+    <ProjectReference Include="..\BackEndService.Gateway\FoodOrderingService.Gateway.csproj" />
+    <ProjectReference Include="..\BackEndService.Workflows\FoodOrderingService.Workflows.csproj" />
   </ItemGroup>
 
 </Project>

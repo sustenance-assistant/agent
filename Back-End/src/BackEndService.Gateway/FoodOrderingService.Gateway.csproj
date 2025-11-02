@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\BackEndService.Core\BackEndService.Core.csproj" />
-    <ProjectReference Include="..\BackEndService.Infrastructure\BackEndService.Infrastructure.csproj" />
+    <ProjectReference Include="..\BackEndService.Core\FoodOrderingService.Core.csproj" />
+    <ProjectReference Include="..\BackEndService.Infrastructure\FoodOrderingService.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

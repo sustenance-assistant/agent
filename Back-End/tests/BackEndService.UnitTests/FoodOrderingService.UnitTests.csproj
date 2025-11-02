@@ -22,9 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\BackEndService.Core\BackEndService.Core.csproj" />
-    <ProjectReference Include="..\..\src\BackEndService.Gateway\BackEndService.Gateway.csproj" />
-    <ProjectReference Include="..\..\src\BackEndService.Workflows\BackEndService.Workflows.csproj" />
+    <ProjectReference Include="..\..\src\BackEndService.Core\FoodOrderingService.Core.csproj" />
+    <ProjectReference Include="..\..\src\BackEndService.Gateway\FoodOrderingService.Gateway.csproj" />
+    <ProjectReference Include="..\..\src\BackEndService.Workflows\FoodOrderingService.Workflows.csproj" />
   </ItemGroup>
 
 </Project>
