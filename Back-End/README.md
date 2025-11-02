@@ -21,11 +21,11 @@ dotnet restore
 dotnet build
 
 # Run the API
-dotnet run --project src/BackEndService.API/BackEndService.API.csproj --urls http://localhost:5050
+dotnet run --project src/BackEndService.API/FoodOrderingService.API.csproj --urls http://localhost:5050
 
 # Or run directly
 cd src/BackEndService.API
-dotnet run --urls http://localhost:5050
+dotnet run --project FoodOrderingService.API.csproj --urls http://localhost:5050
 ```
 
 ### Running Tests
@@ -53,7 +53,7 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 dotnet build --configuration Release
 
 # Publish API for deployment
-dotnet publish src/BackEndService.API/BackEndService.API.csproj \
+dotnet publish src/BackEndService.API/FoodOrderingService.API.csproj \
   --configuration Release \
   --output ./publish
 
