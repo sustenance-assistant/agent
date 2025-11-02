@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.10" />
+    <PackageReference Include="Stripe.net" Version="49.1.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BackEndService.Core\FoodOrderingService.Core.csproj" />
+    <ProjectReference Include="..\BackEndService.Infrastructure\FoodOrderingService.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

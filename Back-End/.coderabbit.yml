@@ -1,0 +1,10 @@
+# CodeRabbit configuration for Back-End
+language: dotnet
+reviewers:
+  - paths:
+      - "Back-End/**"
+    min_reviewers: 1
+labels:
+  - backend
+  - dotnet
+
