@@ -48,7 +48,8 @@ namespace BackEndService.E2ETests
         [Fact(Skip = "Requires running server - skip in CI")]
         public async Task MCPListTools_ReturnsTools()
         {
-            var response = await _client.PostAsync("/api/mcp/tools/list", new StringContent("", Encoding.UTF8, "application/json"));
+            using var requestContent = new StringContent("", Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync("/api/mcp/tools/list", requestContent);
             
             if (response.StatusCode == HttpStatusCode.ServiceUnavailable)
             {

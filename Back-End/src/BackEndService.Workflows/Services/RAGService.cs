@@ -34,7 +34,7 @@ namespace BackEndService.Workflows.Services
         public async Task<string[]> SearchAsync(string query, string? userId = null)
         {
             // Return dummy search results if API key not configured
-            if (string.IsNullOrEmpty(_apiKey) || _apiKey.Contains("your-") || _apiKey.Contains("sk-") == false)
+            if (string.IsNullOrEmpty(_apiKey) || _apiKey.Contains("your-") || !_apiKey.Contains("sk-"))
             {
                 return new[]
                 {
@@ -54,7 +54,7 @@ namespace BackEndService.Workflows.Services
                 // 4. Generate response with context
 
                 var chatUrl = $"{_baseUrl}/chat/completions";
-                var request = new HttpRequestMessage(HttpMethod.Post, chatUrl);
+                using var request = new HttpRequestMessage(HttpMethod.Post, chatUrl);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
 
                 var requestBody = new

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace BackEndService.Infrastructure.Storage
     public class JsonContextStore : IContextStore
     {
         private readonly string _dataPath;
-        private readonly Dictionary<string, WorkflowContext> _cache = new();
+        private readonly ConcurrentDictionary<string, WorkflowContext> _cache = new();
 
         public JsonContextStore()
         {

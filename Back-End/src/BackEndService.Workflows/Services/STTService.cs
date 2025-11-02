@@ -31,7 +31,7 @@ namespace BackEndService.Workflows.Services
         public async Task<string> TranscribeAsync(Stream audioStream)
         {
             // Return dummy data if API key not configured
-            if (string.IsNullOrEmpty(_apiKey) || _apiKey.Contains("your-") || _apiKey.Contains("sk-") == false)
+            if (string.IsNullOrEmpty(_apiKey) || _apiKey.Contains("your-") || !_apiKey.Contains("sk-"))
             {
                 return "I'd like to order a large pepperoni pizza with extra cheese and a side of garlic bread.";
             }
@@ -41,7 +41,7 @@ namespace BackEndService.Workflows.Services
                 // Reset stream position
                 audioStream.Position = 0;
                 
-                var request = new HttpRequestMessage(HttpMethod.Post, _baseUrl);
+                using var request = new HttpRequestMessage(HttpMethod.Post, _baseUrl);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
 
                 var content = new MultipartFormDataContent();

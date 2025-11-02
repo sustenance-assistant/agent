@@ -33,7 +33,7 @@ namespace BackEndService.Workflows.Services
         public async Task<Stream> SynthesizeAsync(string text)
         {
             // Return dummy audio data if API key not configured
-            if (string.IsNullOrEmpty(_apiKey) || _apiKey.Contains("your-") || _apiKey.Contains("sk-") == false)
+            if (string.IsNullOrEmpty(_apiKey) || _apiKey.Contains("your-") || !_apiKey.Contains("sk-"))
             {
                 var dummyAudio = new byte[] { 0xFF, 0xFB, 0x90, 0x00 }; // MP3 header
                 return new MemoryStream(dummyAudio);
@@ -41,7 +41,7 @@ namespace BackEndService.Workflows.Services
 
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Post, _baseUrl);
+                using var request = new HttpRequestMessage(HttpMethod.Post, _baseUrl);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
 
                 var requestBody = new

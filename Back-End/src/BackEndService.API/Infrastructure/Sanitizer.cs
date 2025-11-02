@@ -8,7 +8,7 @@ namespace BackEndService.API.Infrastructure
         {
             if (string.IsNullOrWhiteSpace(input)) return string.Empty;
             var trimmed = input.Trim();
-            if (trimmed.Length > maxLength) trimmed = trimmed.Substring(0, maxLength);
+            if (trimmed.Length > maxLength) trimmed = trimmed[..maxLength];
             return Regex.Replace(trimmed, "[\u0000-\u001F]", "");
         }
     }

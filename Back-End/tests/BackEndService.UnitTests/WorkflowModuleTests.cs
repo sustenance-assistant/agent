@@ -35,7 +35,7 @@ namespace BackEndService.UnitTests
         public async Task ExecuteAsync_WithText_ReturnsAudioLength()
         {
             var mockTts = new Mock<BackEndService.Core.Interfaces.Services.ITTSService>();
-            var audioStream = new MemoryStream(Encoding.UTF8.GetBytes("audio data"));
+            using var audioStream = new MemoryStream(Encoding.UTF8.GetBytes("audio data"));
             mockTts.Setup(x => x.SynthesizeAsync("test")).ReturnsAsync(audioStream);
             
             var module = new BackEndService.Workflows.Modules.TTS.TTSWorkflowModule(mockTts.Object);

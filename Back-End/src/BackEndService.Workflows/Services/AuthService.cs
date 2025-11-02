@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,8 +11,8 @@ namespace BackEndService.Workflows.Services
 {
     public class AuthService : IAuthService
     {
-        private static readonly Dictionary<string, User> Users = new();
-        private static readonly Dictionary<string, ApiKey> ApiKeys = new();
+        private static readonly ConcurrentDictionary<string, User> Users = new();
+        private static readonly ConcurrentDictionary<string, ApiKey> ApiKeys = new();
 
         public Task<User> RegisterAsync(string email, string password, string? name)
         {

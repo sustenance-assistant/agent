@@ -42,13 +42,10 @@ namespace BackEndService.Workflows.Modules.Payment
 
             // Inject context data
             billingRequest.UserId = context.UserId;
-            if (userContext != null && !string.IsNullOrEmpty(userContext.PaymentId))
+            if (userContext != null && !string.IsNullOrEmpty(userContext.PaymentId) && string.IsNullOrEmpty(billingRequest.CardId))
             {
                 // Use stored payment ID if card ID not provided
-                if (string.IsNullOrEmpty(billingRequest.CardId))
-                {
-                    billingRequest.CardId = userContext.PaymentId;
-                }
+                billingRequest.CardId = userContext.PaymentId;
             }
 
             // Charge using saved card OR full card details (Stripe headless style)

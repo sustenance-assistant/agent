@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using BackEndService.Core.Interfaces.Services;
@@ -11,7 +11,7 @@ namespace BackEndService.Workflows.Services
 {
     public class PaymentService : IPaymentService
     {
-        private static readonly Dictionary<string, PaymentCard> Cards = new();
+        private static readonly ConcurrentDictionary<string, PaymentCard> Cards = new();
         private readonly IConfiguration _configuration;
         private readonly string _stripeApiKey;
 
@@ -33,7 +33,7 @@ namespace BackEndService.Workflows.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 UserId = userId,
-                Last4 = cardNumber.Length >= 4 ? cardNumber.Substring(cardNumber.Length - 4) : "****",
+                Last4 = cardNumber.Length >= 4 ? cardNumber[^4..] : "****",
                 Brand = DetectBrand(cardNumber),
                 ExpMonth = expMonth,
                 ExpYear = expYear,

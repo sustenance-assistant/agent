@@ -107,7 +107,7 @@ namespace BackEndService.API.Gateway.Controllers
                 var jsonString = System.Text.Json.JsonSerializer.Serialize(result.Data);
                 var jsonDoc = System.Text.Json.JsonDocument.Parse(jsonString);
                 if (jsonDoc.RootElement.TryGetProperty("success", out var successProp) && 
-                    successProp.GetBoolean() == false)
+                    !successProp.GetBoolean())
                 {
                     return BadRequest(result.Data);
                 }
