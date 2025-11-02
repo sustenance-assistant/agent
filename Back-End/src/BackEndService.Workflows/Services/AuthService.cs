@@ -14,6 +14,11 @@ namespace BackEndService.Workflows.Services
         private static readonly ConcurrentDictionary<string, User> Users = new();
         private static readonly ConcurrentDictionary<string, ApiKey> ApiKeys = new();
 
+        /// <summary>
+        /// Registers a new user. NOTE: This is a placeholder implementation for development/demo purposes.
+        /// Password is not validated or stored. For production, implement proper password hashing (e.g., BCrypt, Argon2)
+        /// and persist users to a secure database.
+        /// </summary>
         public Task<User> RegisterAsync(string email, string password, string? name)
         {
             var user = new User
@@ -26,6 +31,11 @@ namespace BackEndService.Workflows.Services
             return Task.FromResult(user);
         }
 
+        /// <summary>
+        /// Authenticates a user by email. NOTE: This is a placeholder implementation for development/demo purposes.
+        /// Password is not verified. For production, implement password hash verification against stored credentials.
+        /// This method currently allows authentication bypass and should NOT be used in production.
+        /// </summary>
         public Task<User?> LoginAsync(string email, string password)
         {
             var user = Users.Values.FirstOrDefault(u => u.Email == email);

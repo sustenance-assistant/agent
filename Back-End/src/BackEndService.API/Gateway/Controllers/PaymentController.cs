@@ -57,7 +57,7 @@ namespace BackEndService.API.Gateway.Controllers
 
         [HttpPost("bill")]
         [EnableRateLimiting("fixed")]
-        [SwaggerOperation(Summary = "Bill user", Description = "Charges the user's card. Supports both saved card (cardId) or full card details (Stripe headless style). Full card details are processed securely on backend.")]
+        [SwaggerOperation(Summary = "Bill user", Description = "Charges the user's card. Supports both saved card (cardId) or full card details. WARNING: Accepting raw card details (CardNumber, Cvc) directly violates PCI DSS compliance. For production, use Stripe.js/Elements on the frontend to tokenize cards client-side, then pass only the token to this endpoint. This endpoint is for development/demo purposes only.")]
         [SwaggerRequestExample(typeof(BillingRequestDto), typeof(BillingRequestExample))]
         [SwaggerResponse(200, "Billing successful")]
         [SwaggerResponse(400, "Validation error or payment failed")]

@@ -8,10 +8,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Serilog configuration
 builder.Host.UseSerilog((ctx, lc) =>
 {
+    var logPath = ctx.Configuration["Logging:FilePath"] 
+        ?? System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs", "app.ndjson");
+    var logDirectory = System.IO.Path.GetDirectoryName(logPath);
+    if (!string.IsNullOrEmpty(logDirectory) && !System.IO.Directory.Exists(logDirectory))
+    {
+        System.IO.Directory.CreateDirectory(logDirectory);
+    }
+    
     lc.ReadFrom.Configuration(ctx.Configuration)
       .Enrich.FromLogContext()
       .WriteTo.Console()
-      .WriteTo.File(path: "logs/app.ndjson", rollingInterval: RollingInterval.Day, formatter: new Serilog.Formatting.Compact.CompactJsonFormatter());
+      .WriteTo.File(path: logPath, rollingInterval: RollingInterval.Day, formatter: new Serilog.Formatting.Compact.CompactJsonFormatter());
 });
 
 builder.Services.AddControllers();
